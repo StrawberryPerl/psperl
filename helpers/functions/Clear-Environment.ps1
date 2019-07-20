@@ -12,7 +12,7 @@ function Clear-Environment {
         [Parameter(Mandatory=$true, Position=0)]
         [string] $psperl_path
     )
-    Write-Output "Cleaning your environment of any and all Perl variables";
+    # Write-Output "Cleaning your environment of any and all Perl variables";
     # remove any set Perl/local::lib variables
     if (Test-Path 'env:TERM') { Remove-Item env:\TERM }
     if (Test-Path 'env:PERL_JSON_BACKEND') { Remove-Item env:\PERL_JSON_BACKEND }

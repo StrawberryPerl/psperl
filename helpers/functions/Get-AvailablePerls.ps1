@@ -16,46 +16,28 @@
 .OUTPUTS
     [Object] hash of available Perls at Major version level
 #>
-function Get-AvailablePerls(){
+function Get-AvailablePerls {
+    $url = 'http://strawberryperl.com/releases.json'
     $is64bit = If ($env:Processor_Architecture -eq "x86") {$true} Else {$false}
-
     # Ensures that Invoke-WebRequest uses TLS 1.2
     [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-    $url = 'http://strawberryperl.com/releases.json'
-    $opts = @{ Headers = @{ Accept = 'application/json' } }
-    # Write-Debug "list: grabbing list of available Portable Perls";
-    $res = Invoke-WebRequest $url | ConvertFrom-Json
-    # Write-Debug $content
-    # $res = Invoke-RestMethod -Uri $url #  | ConvertFrom-Json | select -expand *
-    # {
-    #     "28" = @{
-    #        "0.1" = @{
-    #             'x86_w64int' = 'http://foo',
-    #             'x86' = 'http://foo',
-    #             'x64' = 'http://foo',
-    #             'x64_ld' = 'http://foo'
-    #             }
-    #         }
-    #     )
-    # }
-    $perls = @{}
-    $num_to_pretty = @{};
-    # make sure all keys are stored as strings for later simplicity
-    ForEach ($row in $res) {
-        # if ($is64bit -And [bool]($row.PSobject.Properties))
+    $res = Invoke-RestMethod -Uri $url -Method Get -Headers @{'Accept'='Application/json'}
+    $all_portables = @();
+    foreach ($row in $res) {
         if ([bool]($row.PSobject.Properties.Name -contains 'edition') -And [bool]($row.edition.PSObject.Properties.Name -contains 'portable')) {
+            $row | Add-Member -Name "sha1" -Type NoteProperty -Value $row.edition.portable.sha1;
+            $row | Add-Member -Name "sha256" -Type NoteProperty -Value $row.edition.portable.sha256;
+            $row | Add-Member -Name "size" -Type NoteProperty -Value $row.edition.portable.size;
+            $row | Add-Member -Name "url" -Type NoteProperty -Value $row.edition.portable.url;
+            $row.PSObject.Properties.Remove('edition');
             $perl, $major, $minor, $rel = $row.version.split('.');
-            if (-Not $perls.ContainsKey($major.toString())) {
-                $perls.Add($major.toString(), @{});
-            }
-            if (-Not $perls[$major.toString()].ContainsKey($row.numver.toString())) {
-                $perls[$major].Add($row.numver.toString(), @{});
-                $num_to_pretty.Add($row.numver.toString(), $row.version)
-            }
-            $perls[$major][$row.numver.toString()].Add($row.archname.toString(), $row.edition.portable.url);
+            $row | Add-Member -Name "Perl" -Type NoteProperty -Value $perl;
+            $row | Add-Member -Name "major" -Type NoteProperty -Value $major;
+            $row | Add-Member -Name "minor" -Type NoteProperty -Value $minor;
+            $row | Add-Member -Name "rel" -Type NoteProperty -Value $rel;
+
+            $all_portables += , $row;
         }
     }
-    # $data = ConvertFrom-Json -InputObject $content
-    # Write-Debug $data
-    @{'perls' = $perls; 'versions' = $num_to_pretty}
+    $all_portables
 }

@@ -3,6 +3,7 @@ param (
     [switch]$available = $false,
     [switch]$init = $false,
     [switch]$setup = $false,
+    [switch]$list = $false,
     [int]$major = 0
 )
 
@@ -14,7 +15,7 @@ if ($PSVersionTable.PSVersion.Major -lt 5) {
 $psperl_path = (Split-Path -parent $MyInvocation.MyCommand.Definition);
 
 # Import some Chocolatey goodness
-Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force;
+# Import-Module "$env:ChocolateyInstall\helpers\chocolateyInstaller.psm1" -Force;
 Import-Module "$psperl_path\helpers\functions.psm1" -Force;
 
 $global:DebugPreference = 'Continue'
@@ -25,32 +26,29 @@ elseif ($init) {
     Init $psperl_path;
 }
 elseif ($available) {
-    $data = Get-AvailablePerls;
-    $perls = $data['perls']
-    $versions = $data['versions']
-    Write-Output "Major contains $($major)"
+    $type = Get-Bits
+    Write-Output "We're using PowerShell $($type) and will only display Perl versions of"
+    Write-Output "that architecture type."
+    Write-Output ""
+    $data = Get-AvailablePerls $psperl_path | Where-Object {$_.archname -clike "*$($type)*"};
     if ($major -gt 0) {
-        Write-Output $versions;
-        ForEach($key in $perls[$major.toString()].Keys.Clone()) {
-            Write-Output ""
-            Write-Output "   * perl-$($key)"
+        Write-Output "Perls available where major version is: $($major)"
+        # Write-Output $versions;
+        ForEach($row in ($data | Where-Object {$_.major -eq $major})) {
+            Write-Output "   - perl-$($row.version)"
         }
     }
     else {
-        # Write-Output $versions;
-        # Write-Output $perls;
-        ForEach($key in ($perls.Keys.Clone()) | Sort-Object -Descending) {
-            Write-Output $key;
+        Write-Output "The current release for each major Perl:"
+        ForEach($row in ($data | Group-Object -Property major | Sort-Object -Descending -Property Name)) {
             # Write-Output $perls[$key];
-            $max = (($perls[$key].Keys | Measure-Object -Maximum).Maximum).toString()
-            $val = $versions.item($max)
-            Write-Output "   * perl-$($val)"
+            # Write-Output $row;
+            Write-Output "   - perl-$($row | %{$_.Group[0].version})"
         }
     }
+    Write-Output ""
 }
 # To turn on Debugging, $global:DebugPreference = 'Continue'
 # To turn off Debugging, $global:DebugPreference = 'SilentlyContinue'
 
 exit;
-# call refreshenv from chocolatey
-# Update-SessionEnvironment
