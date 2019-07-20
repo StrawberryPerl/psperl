@@ -30,7 +30,7 @@ elseif ($available) {
     Write-Output "We're using PowerShell $($type) and will only display Perl versions of"
     Write-Output "that architecture type."
     Write-Output ""
-    $data = Get-AvailablePerls $psperl_path | Where-Object {$_.archname -clike "*$($type)*"};
+    $data = Get-AvailablePerls | Where-Object {$_.archname -clike "*$($type)*"};
     if ($major -gt 0) {
         Write-Output "Perls available where major version is: $($major)"
         # Write-Output $versions;
