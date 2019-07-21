@@ -6,7 +6,9 @@ project.lock.json
 /staging/
 /Packages/
 *.nuget.props
-/_config
+/_config/
+/_zips/
+/_perls/
 
 # dotnet cli install/uninstall scripts
 dotnet-install.ps1
