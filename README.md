@@ -2,6 +2,55 @@
 
 PSPerl - Manage Strawberry Perl (Portable) installations in your $env:HOMEPATH
 
+# SYNOPSIS
+
+A typical install, selection, and use case would look something like this:
+
+```PowerShell
+PS C:\Users\genio> git clone https://github.com/genio/psperl.git _psperl
+PS C:\Users\genio> cd _psperl
+PS C:\Users\genio\_psperl> psperl -Setup
+PS C:\Users\genio\_psperl> psperl -Init
+PS C:\Users\genio\_psperl> cd ..
+PS C:\Users\genio> psperl -Available
+...
+PS C:\Users\genio> psperl -Install perl64-5.30.0.1
+PS C:\Users\genio> psperl -Switch perl64-5.30.0.1
+PS C:\Users\genio> perl -v
+
+This is perl 5, version 30, subversion 0 (v5.30.0) built for MSWin32-x86-multi-thread-64int
+
+Copyright 1987-2019, Larry Wall
+
+Perl may be copied only under the terms of either the Artistic License or the
+GNU General Public License, which may be found in the Perl 5 source kit.
+
+Complete documentation for Perl, including FAQ lists, should be found on
+this system using "man perl" or "perldoc perl".  If you have access to the
+Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+PS C:\Users\genio>
+```
+
+Then, every subsequent time you load up PowerShell, you can forego the installation, etc.
+
+```PowerShell
+PS C:\Users\genio> perl -v
+
+This is perl 5, version 30, subversion 0 (v5.30.0) built for MSWin32-x86-multi-thread-64int
+
+Copyright 1987-2019, Larry Wall
+
+Perl may be copied only under the terms of either the Artistic License or the
+GNU General Public License, which may be found in the Perl 5 source kit.
+
+Complete documentation for Perl, including FAQ lists, should be found on
+this system using "man perl" or "perldoc perl".  If you have access to the
+Internet, point your browser at http://www.perl.org/, the Perl Home Page.
+
+PS C:\Users\genio>
+```
+
 # INSTALLATION
 
 ```PowerShell
