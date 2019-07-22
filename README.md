@@ -26,34 +26,208 @@ That addition to your profile will handle ensuring that PSPerl is always in your
 
 Thank you, Strawberry Perl!
 
-# SWITCH TO PERL VERSION
+# COMMANDS
 
-This part is not yet complete. It would, however, behave fairly simply.
+PSPerl has a few commands to help you through the process of getting a working version of Perl installed.
 
-To switch to one of your installed versions, you'd do something akin to:
-
-```PowerShell
-# select perl version 5.28.0.1 and a local::lib called "normal"
-PS C:\Users\genio> psperl -Switch perl-5.28.0.1@normal
-```
-
-And that would, for the most part, just setup your environment:
+## Available
 
 ```PowerShell
-# which perl will we be using?
-$path="$psperl_path\_perls\5.28.0.1";
-$lib_path="$psperl_path\_perls\libs\5.28.0.1_normal"
-$lib_path = $lib_path.Replace("\", "/")
-
-$env:PATH="$($lib_path)/bin;$($path)\perl\site\bin;$($path)\perl\bin;$($path)\c\bin;$($env:PATH)"
-
-perl -Mlocal::lib="$($lib_path)" *>$null
-
-$env:PERL5LIB="$($lib_path)/lib/perl5";
-$env:PERL_LOCAL_LIB_ROOT= "$($lib_path)";
-$env:PERL_MB_OPT = $("--install_base `"$($lib_path)`"");
-$env:PERL_MM_OPT = $("INSTALL_BASE=$($lib_path)");
+psperl -Available # Shows you a list of all available installations
+psperl -Available -major 10 # shows you a list of all Perls available on v5.10
 ```
+
+The `Available` command will grab the list of releases from [Strawberry Perl's JSON file](http://strawberryperl.com/releases.json) and parse out which releases are available in Portable form -release types found [here](http://strawberryperl.com/releases.html). The information coming from Strawberry Perl's site will be cached locally on your hard drive as a JSON file that we will use from that point on so we don't hit their servers too often and to speed up your experience. This local cache will time out after an hour and a half, at which time we'll grab another copy from Strawberry's site.
+
+It will spit out a list of all of the Perl versions you can install for use on your installation combination of Windows and PowerShell. This part is a bit different from other brew-style installers because we try to account for your `64-bit` vs `32-bit` vs `32-bit with USE_64_BIT_INT`.
+
+### 64-bit Windows, 64-bit PowerShell
+
+This is what you could expect to see on this platform:
+
+```PowerShell
+PS C:\Users\genio> psperl -Available
+We're using a 64-bit PowerShell on a 64-bit Windows OS.
+On 64-bit Windows:
+    32-bit PowerShell: You can use 32-bit, 32-bit USE_64_BIT_INT Perls without problem.
+                       You _can_ use 64-bit Perls, but may run into trouble. RISK
+    64-bit PowerShell: You can use 32-bit, 32-bit USE_64_BIT_INT, or 64-bit Perls.
+On 32-bit Windows:
+    You can only use 32-bit or 32-bit with USE_64_BIT_INT Perls
+
+The current release for each major Perl:
+
+64-bit Perls:
+   - perl64-5.30.0.1
+   - perl64-5.28.2.1
+   - perl64-5.26.3.1
+   - perl64-5.24.4.1
+   - perl64-5.22.3.1
+   - perl64-5.20.3.3
+   - perl64-5.18.4.1
+   - perl64-5.16.3.1
+   - perl64-5.14.4.1
+
+32-bit with USE_64_BIT_INT Perls:
+   - perl32w64int-5.30.0.1
+   - perl32w64int-5.28.2.1
+   - perl32w64int-5.26.3.1
+   - perl32w64int-5.24.4.1
+   - perl32w64int-5.22.3.1
+   - perl32w64int-5.20.3.3
+   - perl32w64int-5.18.4.1
+
+32-bit Perls:
+   - perl32-5.30.0.1
+   - perl32-5.28.2.1
+   - perl32-5.26.3.1
+   - perl32-5.24.4.1
+   - perl32-5.22.3.1
+   - perl32-5.20.3.3
+   - perl32-5.18.4.1
+   - perl32-5.16.3.1
+   - perl32-5.14.4.1
+   - perl32-5.12.3.0
+   - perl32-5.10.1.2
+
+PS C:\Users\genio>
+```
+
+### 64-bit Windows, 32-bit PowerShell
+
+This is what you could expect to see on this platform:
+
+```PowerShell
+PS C:\Windows\SysWOW64\WindowsPowerShell\v1.0> psperl -Available
+We're using a 32-bit PowerShell on a 64-bit Windows OS.
+On 64-bit Windows:
+    32-bit PowerShell: You can use 32-bit, 32-bit USE_64_BIT_INT Perls without problem.
+                       You _can_ use 64-bit Perls, but may run into trouble. RISK
+    64-bit PowerShell: You can use 32-bit, 32-bit USE_64_BIT_INT, or 64-bit Perls.
+On 32-bit Windows:
+    You can only use 32-bit or 32-bit with USE_64_BIT_INT Perls
+
+The current release for each major Perl:
+
+64-bit Perls (RISKY on a 32-bit PS):
+   - perl64-5.30.0.1
+   - perl64-5.28.2.1
+   - perl64-5.26.3.1
+   - perl64-5.24.4.1
+   - perl64-5.22.3.1
+   - perl64-5.20.3.3
+   - perl64-5.18.4.1
+   - perl64-5.16.3.1
+   - perl64-5.14.4.1
+
+32-bit with USE_64_BIT_INT Perls:
+   - perl32w64int-5.30.0.1
+   - perl32w64int-5.28.2.1
+   - perl32w64int-5.26.3.1
+   - perl32w64int-5.24.4.1
+   - perl32w64int-5.22.3.1
+   - perl32w64int-5.20.3.3
+   - perl32w64int-5.18.4.1
+
+32-bit Perls:
+   - perl32-5.30.0.1
+   - perl32-5.28.2.1
+   - perl32-5.26.3.1
+   - perl32-5.24.4.1
+   - perl32-5.22.3.1
+   - perl32-5.20.3.3
+   - perl32-5.18.4.1
+   - perl32-5.16.3.1
+   - perl32-5.14.4.1
+   - perl32-5.12.3.0
+   - perl32-5.10.1.2
+
+PS C:\Windows\SysWOW64\WindowsPowerShell\v1.0>
+```
+
+### 32-bit Windows
+And, finally, on this platform, you'd see:
+
+```PowerShell
+PS C:\Users\genio> psperl -Available
+We're using a 32-bit PowerShell on a 32-bit Windows OS.
+On 64-bit Windows:
+    32-bit PowerShell: You can use 32-bit, 32-bit USE_64_BIT_INT Perls without problem.
+                       You _can_ use 64-bit Perls, but may run into trouble. RISK
+    64-bit PowerShell: You can use 32-bit, 32-bit USE_64_BIT_INT, or 64-bit Perls.
+On 32-bit Windows:
+    You can only use 32-bit or 32-bit with USE_64_BIT_INT Perls
+
+The current release for each major Perl:
+
+32-bit with USE_64_BIT_INT Perls:
+   - perl32w64int-5.30.0.1
+   - perl32w64int-5.28.2.1
+   - perl32w64int-5.26.3.1
+   - perl32w64int-5.24.4.1
+   - perl32w64int-5.22.3.1
+   - perl32w64int-5.20.3.3
+   - perl32w64int-5.18.4.1
+
+32-bit Perls:
+   - perl32-5.30.0.1
+   - perl32-5.28.2.1
+   - perl32-5.26.3.1
+   - perl32-5.24.4.1
+   - perl32-5.22.3.1
+   - perl32-5.20.3.3
+   - perl32-5.18.4.1
+   - perl32-5.16.3.1
+   - perl32-5.14.4.1
+   - perl32-5.12.3.0
+   - perl32-5.10.1.2
+
+PS C:\Users\genio>
+```
+
+
+
+
+
+## Install
+
+```PowerShell
+PS C:\Users\genio> psperl -Install perl64-5.30.0.1
+PS C:\Users\genio> psperl -Install perl32w64int-5.30.0.1
+PS C:\Users\genio> psperl -Install perl32-5.30.0.1
+```
+
+Once you've selected which version of Perl you'd like to use from the list supplied in the `Available` command, you'd just need to install it.
+
+This command will download the Portable Perl zip file from Strawberry Perl's site and store it locally in the `_zips` directory. It will then check that we got the expected file size and SHA1 checksum match. If it's not the right size or checksum, we'll remove the zip file and fail.
+
+Given that we have the right file, we'll extract the zip file into your `_perls` directory. If we're installing `perl32w64int-5.30.0.1` then the path to that Perl would be `psperl_home_dir\_perls\perl32w64int-5.30.0.1`. So, if you installed PSPerl in `C:\Users\genio\_psperl`, the full path to that directory would be `C:\Users\genio\_psperl\_perls\perl32w64int-5.30.0.1`.
+
+Just installing the version of Perl does _not_ make it ready for you to use immediately. This is simply because you may not yet want to work on that version. If you're using v5.30 and wanted to install another version, say v5.28, to test with, you can install that new version but you'd still be on v5.30 until you decide to change it with the `Use` or `Switch` commands.
+
+### Switch
+
+```PowerShell
+PS C:\Users\genio> psperl -Switch perl64-5.30.0.1
+PS C:\Users\genio> psperl -Switch perl32w64int-5.30.0.1
+PS C:\Users\genio> psperl -Switch perl32-5.30.0.1
+```
+
+The `Switch` command can be used to change your current environment setup to use any version of Perl we've already installed. This will be made persistent as we'll store the current version in our local config directory and every time you start a PowerShell session, we'll setup your environment for the selected version of Perl.
+
+You can change which Perl you're using as many times as you'd like during a session, though you can only use one Perl at a time.
+
+### Use
+
+```PowerShell
+PS C:\Users\genio> psperl -Use perl64-5.30.0.1
+PS C:\Users\genio> psperl -Use perl32w64int-5.30.0.1
+PS C:\Users\genio> psperl -Use perl32-5.30.0.1
+```
+
+The `Use` command works almost exactly as the `Switch` command does, but it isn't persistent. With this command, we just start using a different version of Perl, but we haven't switched our preference to that one. If my current preference is Perl v5.28 and it's what I have setup to start on my PowerShell sessions, I could temporarily use Perl v5.30 with this command. If I close my session and re-open it, I'll be back on Perl v5.28.
+
+You can change which Perl you're using as many times as you'd like during a session, though you can only use one Perl at a time.
 
 # AUTHOR
 

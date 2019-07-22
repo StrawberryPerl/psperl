@@ -248,6 +248,7 @@ class PSPerl {
             exit(1);
         }
         $this.ClearEnvironment();
+        $env:PATH = "$($this.rootPath);$($env:PATH)";
         # which perl will we be using?
         [string]$path = "$($this.rootPath)\_perls\$($perl_install)";
 
