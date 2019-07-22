@@ -9,8 +9,8 @@ A typical install, selection, and use case would look something like this:
 ```PowerShell
 PS C:\Users\genio> git clone https://github.com/genio/psperl.git _psperl
 PS C:\Users\genio> cd _psperl
-PS C:\Users\genio\_psperl> psperl -Setup
-PS C:\Users\genio\_psperl> psperl -Init
+PS C:\Users\genio\_psperl> .\psperl.ps1 -Setup
+PS C:\Users\genio\_psperl> .\psperl.ps1 -Init
 PS C:\Users\genio\_psperl> cd ..
 PS C:\Users\genio> psperl -Available
 ...

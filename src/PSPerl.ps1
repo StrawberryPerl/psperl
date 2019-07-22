@@ -187,6 +187,10 @@ class PSPerl {
             current = ''
             is_on = $true
         };
+        # we could be attempting to read settings prior to setup
+        if (![System.IO.Directory]::Exists("$($this.rootPath)\_config")) {
+            return;
+        }
 
         [String]$settingsPath = "$($this.rootPath)\_config\settings.json";
         if (Test-Path $settingsPath) {
@@ -202,6 +206,10 @@ class PSPerl {
 
     # Load in some info about what it is we're doing here.
     [void] SaveSettings() {
+        # we could be attempting to save settings prior to setup
+        if (![System.IO.Directory]::Exists("$($this.rootPath)\_config")) {
+            return;
+        }
         [String]$settingsPath = "$($this.rootPath)\_config\settings.json";
         $this.settings | ConvertTo-Json -depth 100 | Out-File $settingsPath
         return;
