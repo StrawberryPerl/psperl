@@ -1,0 +1,22 @@
+language: c
+
+env:
+  matrix:
+    - TRAVIS_PERL_VERSION="perl64-5.30.0.1"
+    - TRAVIS_PERL_VERSION="perl32w64int-5.30.0.1"
+    - TRAVIS_PERL_VERSION="perl32-5.30.0.1"
+
+os: windows
+
+before_install:
+  # Enable running local PowerShell scripts
+  - PowerShell -Command 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned'
+
+script:
+  - PowerShell -File ./psperl.ps1 -Setup
+  - PowerShell -File ./psperl.ps1 -Init
+  - PowerShell -Command 'psperl -Available'
+  - PowerShell -Command "psperl -Install $TRAVIS_PERL_VERSION"
+  - PowerShell -Command "psperl -Switch $TRAVIS_PERL_VERSION"
+  - PowerShell -Command 'perl -v'
+  - PowerShell -Command 'prove -v t'

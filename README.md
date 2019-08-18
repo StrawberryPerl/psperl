@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/genio/psperl.svg?branch=master)](https://travis-ci.com/genio/psperl)
+
 # NAME
 
 PSPerl - Manage Strawberry Perl (Portable) installations in your $env:HOMEPATH
