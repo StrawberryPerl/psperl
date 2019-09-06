@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/genio/psperl.svg?branch=master)](https://travis-ci.com/genio/psperl)
+[![Build Status](https://travis-ci.org/genio/psperl.svg?branch=master)](https://travis-ci.org/genio/psperl)
 
 # NAME
 
