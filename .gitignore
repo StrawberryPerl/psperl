@@ -9,6 +9,7 @@ project.lock.json
 /_config/
 /_zips/
 /_perls/
+/_libs/
 
 # dotnet cli install/uninstall scripts
 dotnet-install.ps1
