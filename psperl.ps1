@@ -13,8 +13,7 @@ param (
 # Make sure we only attempt to work for PowerShell v5 and greater
 # this allows the use of classes.
 if ($PSVersionTable.PSVersion.Major -lt 5) {
-    Write-Error "PowerShell v5.0+ is required for psperl. https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-6";
-    exit
+    throw "PowerShell v5.0+ is required for psperl. https://docs.microsoft.com/en-us/powershell/scripting/setup/installing-windows-powershell?view=powershell-6";
 }
 $psperl_path = (Split-Path -parent $MyInvocation.MyCommand.Definition);
 $env:PSPERL_ROOT = $psperl_path;
@@ -98,16 +97,14 @@ elseif ($install) {
 
     # if nothing is found, a null thingy is returned. This can be tested with a simple truthiness test
     if (-Not $found) {
-        Write-Error("No installable version of Perl found by the name $($install). Try `psperl -available` to get a list of available perl installations.");
-        exit(1);
+        throw "No installable version of Perl found by the name $($install). Try `"psperl -available`" to get a list of available perl installations.";
     }
     # check to see if we got just one.
     if ($found -is 'System.Object') {
         $psperl.Install($found);
     }
     else {
-        Write-Error("Unexpected results $($found.GetType()) searching for $($install). Try `psperl -available` to get a list of available perl installations.");
-        exit(1);
+        throw "Unexpected results `"$($found.GetType())`" searching for `"$($install)`". Try `"psperl -available`" to get a list of available perl installations.";
     }
 }
 elseif ($switch) { $psperl.Use($switch, $true); }
