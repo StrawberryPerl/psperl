@@ -256,6 +256,15 @@ Given that we have the right file, we'll extract the zip file into your `_perls`
 
 Just installing the version of Perl does _not_ make it ready for you to use immediately. This is simply because you may not yet want to work on that version. If you're using v5.30 and wanted to install another version, say v5.28, to test with, you can install that new version but you'd still be on v5.30 until you decide to change it with the `Use` or `Switch` commands.
 
+## List
+
+```PowerShell
+PS C:\Users\genio> psperl -List # Shows you a list of the Perls you have
+```
+
+The `List` command will show you a listing of which Perls you currently have installed.
+
+
 ### Switch
 
 ```PowerShell
