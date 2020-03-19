@@ -112,6 +112,13 @@ elseif ($install) {
 }
 elseif ($switch) { $psperl.Use($switch, $true); }
 elseif ($use) { $psperl.Use($use, $false); }
+elseif ($list) {
+    Write-Host("Perls installed on your system: ");
+    Write-Host("");
+    ForEach ($dir in (Get-ChildItem -Path "$($env:PSPERL_ROOT)\_perls" -Directory)) {
+        Write-Host("    $($dir.Name)");
+    }
+}
 # To turn on Debugging, $global:DebugPreference = 'Continue'
 # To turn off Debugging, $global:DebugPreference = 'SilentlyContinue'
 
