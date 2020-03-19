@@ -7,8 +7,7 @@ class PSPerl {
     # Constructor
     PSPerl([string]$rootPath, [string]$profilePath) {
         if(![System.IO.Directory]::Exists($rootPath)) {
-            Write-Error "Invalid root path provided";
-            exit(1);
+            throw "Invalid root path provided";
         }
         $this.URL = 'http://strawberryperl.com/releases.json';
         $this.rootPath = $rootPath;
@@ -22,8 +21,7 @@ class PSPerl {
         $the_bits = (Get-CimInstance Win32_OperatingSystem).OSArchitecture;
         if ($the_bits -eq '64-bit') { return 64; }
         elseif ($the_bits -eq '32-bit') { return 32; }
-        Write-Error("Invalid OS Architecture? We don't know what to do with a $($the_bits)-bit architecture");
-        exit(1);
+        throw "Invalid OS Architecture? We don't know what to do with a `"$($the_bits)`" architecture";
     }
 
     # return the current PowerShell's bitness. will be 64 or 32. might not be the same as the OS
@@ -31,8 +29,7 @@ class PSPerl {
         $the_bits = [System.Runtime.InterOpServices.Marshal]::SizeOf([System.IntPtr]::Zero)*8;
         if ($the_bits -eq '64') { return 64; }
         elseif ($the_bits -eq '32') { return 32; }
-        Write-Error("Invalid PowerShell Architecture? We don't know what to do with a $($the_bits)-bit PowerShell");
-        exit(1);
+        throw "Invalid PowerShell Architecture? We don't know what to do with a $($the_bits)-bit PowerShell";
     }
 
     # get an array of available Portable Perl versions
@@ -148,21 +145,18 @@ class PSPerl {
             # check to make sure we got the right size file
             [int]$size = (Get-Item $pathZip).length;
             if ($size -ne $perl_obj.size) {
-                Write-Error("The file we have is $($size) bytes but we expected $($perl_obj.size). Deleting the file.");
                 Remove-Item -Path $pathZip -Force;
-                exit(1);
+                throw "The file we have is $($size) bytes but we expected $($perl_obj.size). Deleting the file.";
             }
             # check the SHA1 checksums
             [String]$checksum = (Get-FileHash -Path $pathZip -Algorithm SHA1).hash;
             if ($checksum -ne $perl_obj.sha1) {
-                Write-Error("The file's SHA1 checksum is off. Deleting the file.");
                 Remove-Item -Path $pathZip -Force;
-                exit(1);
+                throw "The file's SHA1 checksum is off. Deleting the file.";
             }
         }
         else {
-            Write-Error("We tried to download the file, but we didn't get it.");
-            exit(1);
+            throw "We tried to download the file, but we didn't get it.";
         }
 
         # extract the zip into the directory
@@ -252,8 +246,7 @@ class PSPerl {
 
     [void] Use([string]$perl_install, [bool]$persistent = $false) {
         if (-Not $this.InstalledPerls().Contains($perl_install)) {
-            Write-Error("$($perl_install) isn't yet installed. Try installing it.");
-            exit(1);
+            throw "$($perl_install) isn't yet installed. Try installing it.";
         }
         $this.ClearEnvironment();
         $env:PATH = "$($this.rootPath);$($env:PATH)";
