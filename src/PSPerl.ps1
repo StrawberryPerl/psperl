@@ -19,8 +19,8 @@ class PSPerl {
     # Return the operating system's bitness. will be 64 or 32
     [int] ArchOS() {
         $the_bits = (Get-CimInstance Win32_OperatingSystem).OSArchitecture;
-        if ($the_bits -eq '64-bit') { return 64; }
-        elseif ($the_bits -eq '32-bit') { return 32; }
+        if ($the_bits -match '64') { return 64; }
+        elseif ($the_bits -match '32') { return 32; }
         throw "Invalid OS Architecture? We don't know what to do with a `"$($the_bits)`" architecture";
     }
 
