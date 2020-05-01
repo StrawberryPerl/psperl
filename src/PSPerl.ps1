@@ -99,6 +99,7 @@ class PSPerl {
         if (Test-Path 'env:PERL_MM_OPT') { Remove-Item env:\PERL_MM_OPT }
         if (Test-Path 'env:PERL_MB_OPT') { Remove-Item env:\PERL_MB_OPT }
         if (Test-Path 'env:PERL_LOCAL_LIB_ROOT') { Remove-Item env:\PERL_LOCAL_LIB_ROOT }
+        if (Test-Path 'env:PSPERL_CURRENT') { Remove-Item env:\PSPERL_CURRENT }
 
         # Write-Output "Path to PSPerl is: $($this.rootPath)"
         # Go through the PATH and remove Perl-related items
@@ -249,6 +250,7 @@ class PSPerl {
             throw "$($perl_install) isn't yet installed. Try installing it.";
         }
         $this.ClearEnvironment();
+        $env:PSPERL_CURRENT = $perl_install;
         $env:PATH = "$($this.rootPath);$($env:PATH)";
         # which perl will we be using?
         [string]$path = "$($this.rootPath)\_perls\$($perl_install)";
