@@ -1,0 +1,24 @@
+Changes log for PSPerl
+
+0.1.0       2020-06-29
+  * Switch to https://strawberry.perl.bot/releases.json
+    - Gets us HTTPS, and it's faster than strawberryperl.com
+  * Add a -Version or -V command to show version information
+  * Begin some structure for creating a -Local or -Lib command
+    to deal with local::lib
+  * Get some tags/releases back-filled
+  * Added the Changes log
+
+0.0.2       2020-04-30
+  * Store the current version we're running in the environment
+  * Fix for non-English Windows installs (thanks xenu)
+  * Fix for error handling (thanks xenu)
+
+0.0.1       2020-03-18
+  * Initial Release:
+  * psperl -Available
+  * psperl -Init
+  * psperl -List
+  * psperl -Install
+  * psperl -Use
+  * psperl -Switch

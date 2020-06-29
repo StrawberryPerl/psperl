@@ -9,7 +9,7 @@ class PSPerl {
         if(![System.IO.Directory]::Exists($rootPath)) {
             throw "Invalid root path provided";
         }
-        $this.URL = 'http://strawberryperl.com/releases.json';
+        $this.URL = 'https://strawberry.perl.bot/releases.json';
         $this.rootPath = $rootPath;
         $this.profilePath = $profilePath;
         $this.LoadSettings();

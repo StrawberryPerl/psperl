@@ -4,6 +4,8 @@ param (
     [switch]$init = $false,
     [switch]$setup = $false,
     [switch]$list = $false,
+    [switch]$version = $false,
+    [switch]$v = $false,
     [string]$install = '',
     [string]$switch = '',
     [string]$use = '',
@@ -17,6 +19,7 @@ if ($PSVersionTable.PSVersion.Major -lt 5) {
 }
 $psperl_path = (Split-Path -parent $MyInvocation.MyCommand.Definition);
 $env:PSPERL_ROOT = $psperl_path;
+$env:PSPERL_VERSION = '0.1.0';
 
 # Import our classes
 . "$($psperl_path)\src\PSPerl.ps1";
@@ -115,6 +118,18 @@ elseif ($list) {
     ForEach ($dir in (Get-ChildItem -Path "$($env:PSPERL_ROOT)\_perls" -Directory)) {
         Write-Host("    $($dir.Name)");
     }
+}
+elseif ($version -or $v) {
+    Write-Host("This is PSPerl v$($env:PSPERL_VERSION)");
+    Write-Host("");
+    Write-Host("Directories of note:")
+    Write-Host("$($env:PSPERL_ROOT)\_config");
+    Write-Host("$($env:PSPERL_ROOT)\_locals");
+    Write-Host("$($env:PSPERL_ROOT)\_perls");
+    Write-Host("$($env:PSPERL_ROOT)\_zips");
+    Write-Host("");
+    Write-Host("https://github.com/genio/psperl");
+    Write-Host("");
 }
 # To turn on Debugging, $global:DebugPreference = 'Continue'
 # To turn off Debugging, $global:DebugPreference = 'SilentlyContinue'
