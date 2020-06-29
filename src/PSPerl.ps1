@@ -212,7 +212,12 @@ class PSPerl {
 
     [void] Setup() {
         # check to ensure the $this.profilePath exists
-        if(![System.IO.File]::Exists($this.profilePath)) {
+        if (![System.IO.File]::Exists($this.profilePath)) {
+            if (![System.IO.Directory]::Exists($this.profilePath)) {
+                $profileDir = (Split-Path -parent $this.profilePath)
+                Write-Host("You don't yet have the profile directory $($profileDir). We'll create it now.");
+                New-Item -ItemType Directory $profileDir -ErrorAction SilentlyContinue
+            }
             Write-Host("You don't yet have a profile at $($this.profilePath). We'll set that up now.");
             # this is like touch filename in linux
             New-Item -ItemType file $this.profilePath
