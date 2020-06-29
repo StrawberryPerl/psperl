@@ -19,7 +19,7 @@ if ($PSVersionTable.PSVersion.Major -lt 5) {
 }
 $psperl_path = (Split-Path -parent $MyInvocation.MyCommand.Definition);
 $env:PSPERL_ROOT = $psperl_path;
-$env:PSPERL_VERSION = '0.1.0';
+$env:PSPERL_VERSION = '0.1.1';
 
 # Import our classes
 . "$($psperl_path)\src\PSPerl.ps1";
