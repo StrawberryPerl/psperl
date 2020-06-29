@@ -22,5 +22,13 @@ jobs:
         run: .\psperl.ps1 -Setup
       - name: psperl -Init
         run: .\psperl.ps1 -Init
+      - name: psperl -Version
+        run: .\psperl.ps1 -Version
       - name: psperl -Available
         run: psperl -Available
+      - name: psperl -Install perl64-5.30.1.1
+        run: psperl -Install perl64-5.30.1.1
+      - name: psperl -Switch perl64-5.30.1.1
+        run: psperl -Switch perl64-5.30.1.1
+      - name: perl -V
+        run: perl -V
