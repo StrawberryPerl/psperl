@@ -162,13 +162,32 @@ class PSPerl {
 
         # extract the zip into the directory
         Write-Host("Found $($pathZip) with the correct size and SHA1 checksum. Extracting.");
-        Expand-Archive $pathZip -DestinationPath $pathDir;
+        $this.ExtractArchive($pathZip, $pathDir);
         Write-Host("");
         Write-Host("Installed $($perl_obj.install_name) in $($pathDir). Try using it with:");
         Write-Host("");
         Write-Host("    psperl -use $($perl_obj.install_name)     # temporary. this session");
         Write-Host("    psperl -switch $($perl_obj.install_name)  # permanent. this and every subsequent session");
         Write-Host("");
+    }
+
+    [void] ExtractArchive([String]$archive_path, [String]$out_dir) {
+        # tar.exe from Cygwin or MSYS may struggle with Windows-style paths so
+        # ensure we are using the one that came with Windows 10
+        $tar_path = "$env:WINDIR\system32\tar.exe";
+        if ([System.IO.File]::Exists($tar_path)) {
+            [void](New-Item -ItemType Directory -Path $out_dir -Force);
+            & $tar_path -xf $archive_path -C $out_dir;
+            if (-Not $?) {
+                Remove-Item -Recurse -Force $out_dir;
+                throw "Unable to extract the archive.";
+            }
+        }
+        else {
+            # Expand-Archive is much slower than tar, so we only use it as a
+            # fallback
+            Expand-Archive $archive_path -DestinationPath $out_dir;
+        }
     }
 
     [array] InstalledPerls() {
