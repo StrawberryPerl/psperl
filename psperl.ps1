@@ -116,7 +116,14 @@ elseif ($list) {
     Write-Host("Perls installed on your system: ");
     Write-Host("");
     ForEach ($dir in (Get-ChildItem -Path "$($env:PSPERL_ROOT)\_perls" -Directory)) {
-        Write-Host("    $($dir.Name)");
+        if ($dir.Name -eq $env:PSPERL_CURRENT) {
+            Write-Host -NoNewline " * ";
+        }
+        else {
+            Write-Host -NoNewline "   ";
+        }
+
+        Write-Host $dir.Name;
     }
 }
 elseif ($version -or $v) {
