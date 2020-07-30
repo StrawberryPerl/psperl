@@ -129,7 +129,7 @@ elseif ($list) {
 elseif ($version -or $v) {
     Write-Host("This is PSPerl v$($env:PSPERL_VERSION)");
     Write-Host("");
-    Write-Host("Directories of note:")
+    Write-Host("Directories of note:");
     Write-Host("$($env:PSPERL_ROOT)\_config");
     Write-Host("$($env:PSPERL_ROOT)\_locals");
     Write-Host("$($env:PSPERL_ROOT)\_perls");
@@ -137,6 +137,9 @@ elseif ($version -or $v) {
     Write-Host("");
     Write-Host("https://github.com/genio/psperl");
     Write-Host("");
+}
+else {
+    Get-Content -Path "$($env:PSPERL_ROOT)\helpfile.txt" | Write-Host
 }
 # To turn on Debugging, $global:DebugPreference = 'Continue'
 # To turn off Debugging, $global:DebugPreference = 'SilentlyContinue'

@@ -1,0 +1,57 @@
+NAME
+    psperl
+
+SYNTAX
+    psperl [-Command]
+    psperl [-Command <string>]
+
+VERBS
+    -Available
+        The `Available` command will grab the list of releases from 
+        Strawberry Perl's JSON file:
+        http://strawberryperl.com/releases.json
+        and parse out which releases are available in Portable form
+        -release types found here:
+        http://strawberryperl.com/releases.html
+    -Init
+        The Init command is usually just added to your $Profile so that psperl
+        is always in your PowerShell's $env:Path environment variable. From
+        that point, you could just run any other psperl command.
+    -Install <string>
+        Once you've selected which version of Perl you'd like to use
+        from the list supplied in the `Available` command, you'd just need
+        to install it.
+        This command will download the Portable Perl zip file from
+        Strawberry Perl's site, store it locally, check its checksum,
+        unzip it, and have it available to use later.
+    -List
+        Show a listing of which Perls are currently installed. An asterisk
+        (*) indicates the version currently in use.
+    -Setup
+        Ensure all directories are in place, and that you have $Profile setup
+        and in place. It will add a few lines to your $Profile to initialize
+        the application and ensure everything's in your $env:Path correctly.
+    -Switch <string>
+        Change your current environment setup to use any version of
+        Perl already installed. This will be made persistent as we'll
+        store the current version in our local config directory and
+        every time you start a PowerShell session, we'll setup your
+        environment for the selected version of Perl.
+        You can change which Perl you're using as many times as you'd
+        like during a session, though you can only use one Perl at a
+        time.
+    -Use <string>
+        Almost exactly the same as the `Switch` command. However, it's not
+        persistent.
+        With this command, we just start using a different version of Perl,
+        but we haven't switched our preference to that one. If the current
+        preference is Perl v5.28 and it's what is setup to start on
+        PowerShell sessions, we could temporarily use Perl v5.30 with this
+        command. If the session's closed and re-opened, it'll be back on
+        Perl v5.28.
+        You can change which Perl you're using as many times as you'd
+        like during a session, though you can only use one Perl at a
+        time.
+    -Version
+        Displays the verson of PSPerl you're currently using.
+    
