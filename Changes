@@ -1,5 +1,7 @@
 Changes log for PSPerl
 
+0.1.2       2021
+
 0.1.1       2021-04-14
   * Removed TravisCI testing
   * Altered the Setup() method to create the directory for the
