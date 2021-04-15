@@ -1,10 +1,11 @@
 Changes log for PSPerl
 
-0.1.1       2020
+0.1.1       2021-04-14
   * Removed TravisCI testing
   * Altered the Setup() method to create the directory for the
     $Profile if it doesn't yet exist
   * Created a GitHub Workflow for testing purposes
+  * Reverted to https://strawberryperl.com/releases.json
 
 0.1.0       2020-06-29
   * Switch to https://strawberry.perl.bot/releases.json
